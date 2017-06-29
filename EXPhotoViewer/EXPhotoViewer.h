@@ -10,6 +10,6 @@
 
 @interface EXPhotoViewer : UIViewController <UIScrollViewDelegate>
 
-+ (void) showImageFrom:(UIImageView*)image onClose:(void (^nullability)())close;
++ (void) showImageFrom:(UIImageView*)image onClose:(void(^)())close;
 
 @end
