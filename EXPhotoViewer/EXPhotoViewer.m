@@ -17,6 +17,7 @@
 @property (nonatomic, retain) UIViewController* controller;
 @property (nonatomic, retain) UIViewController* selfController;
 @property (nonatomic, retain) UIImageView* originalImage;
+@property (nonatomic, copy, nullability) void (^closeBlock)();
 
 @end
 
@@ -24,10 +25,14 @@ static CGFloat s_backgroundScale = 0.8f;
 
 @implementation EXPhotoViewer
 
-+ (void) showImageFrom:(UIImageView*) imageView {
++ (void) showImageFrom:(UIImageView*)imageView onClose:(void (^nullability)())close {
     if (imageView.image) {
         EXPhotoViewer* viewer = [EXPhotoViewer new];
         [viewer showImageFrom:imageView];
+    }
+    
+    if(close) {
+        self.closeBlock = close;
     }
 }
 
@@ -153,6 +158,10 @@ static CGFloat s_backgroundScale = 0.8f;
         }
         [self.view removeFromSuperview];
         [self.tempViewContainer removeFromSuperview];
+        
+        if(self.closeBlock) {
+            self.closeBlock();
+        }
     }];
     
     self.selfController = nil;//Ok ARC you can kill me now.
